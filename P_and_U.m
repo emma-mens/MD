@@ -5,7 +5,7 @@ P_tensor = zeros(3,3);
 
 for i=1:N
     for j=1:N
-        if j>1
+        if j>i
             P_tensor = P_tensor + rij(i,j)'*Fij(i,j);
         end
     end
