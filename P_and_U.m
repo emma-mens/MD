@@ -2,6 +2,7 @@ function [P,U]=P_and_U(N,Vs,rij,Fij,Uij,T_inst,P_LRC,E_LRC)
 
 % TODO (emazuh): Optimize this code
 P_tensor = zeros(3,3);
+u = 
 
 for i=1:N
     for j=1:N
