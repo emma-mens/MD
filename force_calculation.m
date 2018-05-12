@@ -6,12 +6,14 @@ function [Fij,Uij,rij]=force_calculation(N,r,Ls,rc2)
    Fij = zeros(N,N,3);
  
    % Force b/n particle i and j
-   % TODO (emazuh): optimize, account for r cutoff
    epsilon = 1.65*10^(-21); % LJ energy [J]
    sigma = 3.4*10^(-10); % LJ diameter [m]
-   rij = zeros(N,N,3);
    rc = rc2^0.5;
    
+   % calculate distance b/n atom pairs
+   rij  = permute(r - reshape(r', [1,3,N]), [1,3,2]);
+   
+   % TODO (emazuh): optimize force calculation, account for r cutoff
    for i=1:N
        for j=1:N
            if i < j
@@ -38,21 +40,6 @@ function [Fij,Uij,rij]=force_calculation(N,r,Ls,rc2)
            end
        end
    end
-   
-%    rtest = reshape(r - reshape(r', [1,3,N]), [N,N,3]);
-%    c = reshape(r', [1,3,N]);
-%    r
-%    r - c
-%    c = reshape(r - c, N,N,3);
-%    
-%    c(2,1,:)
-%    rij(2,1,:)
-%    r(1,:) - c(1,:,2)
-%    rtest(1,2,:)
-%    t1 = rtest(1,1,:)
-%    t2 = rij(1,1,:)
+  
 
-%    isequal(rij, reshape(rtest, [N,N,3]))
-   
-   
 

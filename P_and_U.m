@@ -26,6 +26,6 @@ end
 %     end
 % end
 
-P = trace(Pij/Vs)/3 + P_LRC + N*kB*T_inst/Vs
-U = E_LRC + mean2(Uij) %TODO: emazuh 
+P = trace(Pij/Vs)/3 + P_LRC + N*kB*T_inst/Vs;
+U = E_LRC + mean2(Uij); %TODO: emazuh 
 pause on
