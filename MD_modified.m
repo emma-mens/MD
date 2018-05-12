@@ -29,7 +29,7 @@ clc;
 %*************************************************************************
 % input parameters
 %*************************************************************************
-Ni = 8; % number of atoms per side in original cubic configuration 
+Ni = 2; %8 number of atoms per side in original cubic configuration 
 Ts = 1.171461; % desired (and initial) temperature in LJ units (Ts = kB*T/epsilon)
 ns = 0.903992; % LJ number density ns = n*sigma^3
 epsilon = 1.65*10^(-21); % LJ energy [J]
@@ -103,8 +103,8 @@ v = v-repmat(c,N,1);
 
 for t = 1:1:STEPS   
 
-    Uij = zeros(N,N);
-    Fij = zeros(N,N,3);
+    % Uij = zeros(N,N);
+    % Fij = zeros(N,N,3);
     
 %*************************************************************************
 % calculate forces 
@@ -118,11 +118,12 @@ for t = 1:1:STEPS
 [Fij,Uij,rij]= force_calculation(N,r,Ls,rc2);
     
        
-    F(:,1) = sum(Fij(:,:,1)')';
-    F(:,2) = sum(Fij(:,:,2)')';
-    F(:,3) = sum(Fij(:,:,3)')';
-    
+%     F(:,1) = sum(Fij(:,:,1)')';
+%     F(:,2) = sum(Fij(:,:,2)')';
+%     F(:,3) = sum(Fij(:,:,3)')';
+% TODO (emazuh): sanity check mixture b/n LJ units and normal units
 
+    F = squeeze(sum(Fij, 2)); % sum along second dimension
 
 %*************************************************************************
 % calculate new atom positions, velocities based on forces just calculates
