@@ -1,31 +1,16 @@
 function [P,U]=P_and_U(N,Vs,rij,Fij,Uij,T_inst,P_LRC,E_LRC)    
 
 kB = 1.38065*10^(-23); % Boltzmann constant [J/K]
+epsilon = 1.65*10^(-21); % LJ energy [J]
+sigma = 3.4*10^(-10); % LJ diameter [m]
 
-% TODO (emazuh): Optimize this code
-Pij = zeros(3,3);
+% since we only care about the xx,yy and zz components, I only calculate those
+% Divide by 2 to account for double counting
+Pij = rij.*Fij;
+P_axes = sum(Pij(:))/3/Vs/2;
+P = P_axes + N*kB*T_inst/Vs;
+P = P*sigma^3/epsilon % LJ
 
-% optimize later
-
-for i=1:3
-    for j=1:3
-        for k=1:N
-            for l=k:N
-                Pij(i,j) = Pij(i,j) + rij(k,l,i)*Fij(k,l,j);
-            end
-        end
-    end
-end
-
-% for k=1:N
-%     for l=1:N
-%         if l > k
-%             % P_tensor = P_tensor + rij(i,j)'*Fij(i,j);
-%             Pij(i,j) = 
-%         end
-%     end
-% end
-
-P = trace(Pij/Vs)/3 + P_LRC + N*kB*T_inst/Vs;
-U = E_LRC + mean2(Uij); %TODO: emazuh 
+U = sum(Uij(:))/epsilon % LJ
+z
 pause on

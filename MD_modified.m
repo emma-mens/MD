@@ -7,6 +7,7 @@
 %                   Originally written by Michael S. H. Boutilier
 %                   Modified by N. G. Hadjiconstantinou 
 %                   Aug. 1, 2014
+%                   Submitted by: Emmanuel Azuh
 %
 %*************************************************************************
 %*************************************************************************
@@ -29,7 +30,7 @@ clc;
 %*************************************************************************
 % input parameters
 %*************************************************************************
-Ni = 2; %8 number of atoms per side in original cubic configuration 
+Ni = 8; % number of atoms per side in original cubic configuration 
 Ts = 1.171461; % desired (and initial) temperature in LJ units (Ts = kB*T/epsilon)
 ns = 0.903992; % LJ number density ns = n*sigma^3
 epsilon = 1.65*10^(-21); % LJ energy [J]
@@ -43,7 +44,7 @@ kB = 1.38065*10^(-23); % Boltzmann constant [J/K]
 %*************************************************************************
 
 rc = 3; % cut-off radius, in LJ units, i.e., number of sigmas
-STEPS = 1*10^4; % total number of time steps
+STEPS = 1*10^3; %4 total number of time steps
 STEPS_thermostat = 3*10^3; % number of steps to leave thermostat on until
 STEPS_equilib = 4*10^3; % number of steps before starting to average
 alpha = 0.01; % constant temperature constraint method relaxation parameter (optional)
@@ -65,9 +66,9 @@ rc2 = rc^2; % square of cut-off radius
 % initialize variables
 %*************************************************************************
 
-r = zeros(N,3); % atom position vectors at current time---3 components
+% r = zeros(N,3); % atom position vectors at current time---3 components
 rij = zeros(N,N,3); % separation (matrix) for atom i and j at current time---3 components
-v = zeros(N,3); % atom velocity vectors---3 components 
+% v = zeros(N,3); % atom velocity vectors---3 components 
 F = zeros(N,3); % total force on each atom at current time---3 components
 Res = zeros(STEPS,4); % Result Array (for all timesteps)  
 
