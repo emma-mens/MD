@@ -8,9 +8,7 @@ sigma = 3.4*10^(-10); % LJ diameter [m]
 % Divide by 2 to account for double counting
 Pij = rij.*Fij;
 P_axes = sum(Pij(:))/3/Vs/2;
-P = P_axes + N*kB*T_inst/Vs;
-P = P*sigma^3/epsilon % LJ
+P = P_axes + N*T_inst*epsilon/Vs; % Note: T_inst is LJ
+P = P*sigma^3/epsilon; % LJ
 
-U = sum(Uij(:))/epsilon % LJ
-z
-pause on
+U = sum(Uij(:))/epsilon; % LJ

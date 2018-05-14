@@ -44,7 +44,7 @@ kB = 1.38065*10^(-23); % Boltzmann constant [J/K]
 %*************************************************************************
 
 rc = 3; % cut-off radius, in LJ units, i.e., number of sigmas
-STEPS = 1*10^3; %4 total number of time steps
+STEPS = 1*10^4; %4 total number of time steps
 STEPS_thermostat = 3*10^3; % number of steps to leave thermostat on until
 STEPS_equilib = 4*10^3; % number of steps before starting to average
 alpha = 0.01; % constant temperature constraint method relaxation parameter (optional)
@@ -61,6 +61,14 @@ T_set = Ts*epsilon/kB; % set temperature, in Kelvin
 P_LRC = 32/9*pi*ns^2*rc^(-9) - 16/3*pi*ns^2*rc^(-3); % long-range P correction
 E_LRC = 8/9*pi*ns*rc^(-9)-8/3*pi*ns*rc^(-3); % long-range U correction (per particle)
 rc2 = rc^2; % square of cut-off radius
+
+% Conversion: T* = T Kb/epsilon; n* = n sigma^3; P = P sigma^3/epsilon
+Ts = epsilon*Ts/kB;
+ns = ns/(sigma^3);
+rc = rc*sigma;
+dt = sqrt(m*sigma^2/epsilon)*dt;
+Vs = Vs*sigma^3;
+
 
 %*************************************************************************
 % initialize variables
