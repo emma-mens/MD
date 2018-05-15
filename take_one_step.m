@@ -1,16 +1,15 @@
 function [rnew,vnew,T_inst]=take_one_step(N,r,v,F,t,dt,Ls,STEPS_thermostat,alpha,Ts)
 
-m = 39.948*1.660538921*10^(-27); % molecule mass [kg]
-kB = 1.38065*10^(-23); % Boltzmann constant [J/K]
-sigma = 3.4*10^(-10); % LJ diameter [m]
-epsilon = 1.65*10^(-21); % LJ energy [J]
+m = 1; %39.948*1.660538921*10^(-27); % molecule mass [kg]
+% kB = 1.38065*10^(-23); % Boltzmann constant [J/K]
+% sigma = 3.4*10^(-10); % LJ diameter [m]
+% epsilon = 1.65*10^(-21); % LJ energy [J]
 rc = 3;
 rc2 = rc^2;
 % Ls = Ls*sigma; % TODO (emazuh): change this if you use LJ Ls in force_calculation
 
 % calculate acceleration
 a = F/m;
-
 
 % TODO (emazuh): velocity verley (maybe switch with leapfrog later?)
 
@@ -19,14 +18,15 @@ rnew = r + v*dt + 0.5*a*dt^2;
 
 % apply boundary condition on rnew
 rnew(rnew < 0 | rnew > Ls) = mod(rnew(rnew < 0 | rnew > Ls), Ls);
+% assert(rnew(rnew >= 0) & rnew(rnew <= Ls), 'atoms are outside the box');
 
 [Fij, ~, ~] = force_calculation(N,rnew,Ls, rc2);
 F_next = squeeze(sum(Fij, 2));
 
 % update velocities
-vnew = v + 0.5*(a + F_next/m)*dt;
-
-% TODO (emazuh): calculate temperature (using thermostate with large Q)
+anew = F_next/m;
+vnew = v + 0.5*(a + anew)*dt;
+z
 %V = (Ls*sigma)^3;
 %rho = m*N/V;
 % u = m*sum(vnew, 1)/rho/V; % flow velocity
@@ -40,13 +40,11 @@ u = mean(vnew, 1);
 
 % p = m*norm(vnew).^2-norm(u)^2;
 
-sig = (kB*Ts/m)^0.5;
 
+T_inst = m*sum(vecnorm(vnew, 2, 2).^2-norm(u)^2, 1)/(3*N);
 
-% Use crude method for now. TODO (emazuh): implement Nose-Hoover
-if (mod(t, 200)) == 0 && (t < STEPS_thermostat)
-    vnew = sig*randn(N, 3);
+if t < STEPS_thermostat
+   vnew = vnew*sqrt(Ts/T_inst); 
 end
 
-T_inst = m*sum(vecnorm(vnew, 2, 2).^2-norm(u)^2, 1)/(3*N*kB);
-T_inst = T_inst*kB/epsilon; % LJ    
+% T_inst = T_inst*kB/epsilon; % LJ    

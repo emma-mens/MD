@@ -30,9 +30,9 @@ clc;
 %*************************************************************************
 % input parameters
 %*************************************************************************
-Ni = 8; % number of atoms per side in original cubic configuration 
-Ts = 1.171461; % desired (and initial) temperature in LJ units (Ts = kB*T/epsilon)
-ns = 0.903992; % LJ number density ns = n*sigma^3
+Ni = 2; %8 number of atoms per side in original cubic configuration 
+Ts = 5; % 1.171461; % desired (and initial) temperature in LJ units (Ts = kB*T/epsilon)
+ns = 0.5; % 0.903992; % LJ number density ns = n*sigma^3
 epsilon = 1.65*10^(-21); % LJ energy [J]
 sigma = 3.4*10^(-10); % LJ diameter [m]
 m = 39.948*1.660538921*10^(-27); % molecule mass [kg]
@@ -62,13 +62,6 @@ P_LRC = 32/9*pi*ns^2*rc^(-9) - 16/3*pi*ns^2*rc^(-3); % long-range P correction
 E_LRC = 8/9*pi*ns*rc^(-9)-8/3*pi*ns*rc^(-3); % long-range U correction (per particle)
 rc2 = rc^2; % square of cut-off radius
 
-% Conversion: T* = T Kb/epsilon; n* = n sigma^3; P = P sigma^3/epsilon
-Ts = epsilon*Ts/kB;
-ns = ns/(sigma^3);
-rc = rc*sigma;
-dt = sqrt(m*sigma^2/epsilon)*dt;
-Vs = Vs*sigma^3;
-
 
 %*************************************************************************
 % initialize variables
@@ -92,7 +85,7 @@ Res = zeros(STEPS,4); % Result Array (for all timesteps)
 %*************************************************************************
 %*************************************************************************
 [r,v]=initialize(Ls,Ni,Ts);
-
+% init_pos = r;
 
 % %*************************************************************************
 % % Remove any center of mass motion
@@ -111,9 +104,6 @@ v = v-repmat(c,N,1);
 %*************************************************************************
 
 for t = 1:1:STEPS   
-
-    % Uij = zeros(N,N);
-    % Fij = zeros(N,N,3);
     
 %*************************************************************************
 % calculate forces 
@@ -125,12 +115,6 @@ for t = 1:1:STEPS
 % Uij of size NxN containing the corresponding energy of interaction
 % *************************************************************************
 [Fij,Uij,rij]= force_calculation(N,r,Ls,rc2);
-    
-       
-%     F(:,1) = sum(Fij(:,:,1)')';
-%     F(:,2) = sum(Fij(:,:,2)')';
-%     F(:,3) = sum(Fij(:,:,3)')';
-% TODO (emazuh): sanity check mixture b/n LJ units and normal units
 
     F = squeeze(sum(Fij, 2)); % sum along second dimension
 
