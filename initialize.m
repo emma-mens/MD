@@ -21,11 +21,11 @@ v = sig*randn(N, 3);
 r = zeros(N,3);
 particle_number = 1;
 
-dl = Ls/(Ni-1); % inter atomic spacing
+dl = Ls/Ni; % inter atomic spacing
 
-for i=0:dl:Ls
-    for j=0:dl:Ls
-        for k=0:dl:Ls
+for i=dl/2:dl:Ls-dl/2
+    for j=dl/2:dl:Ls-dl/2
+        for k=dl/2:dl:Ls-dl/2
             r(particle_number,:) = [i,j,k];
             particle_number = particle_number + 1;
         end

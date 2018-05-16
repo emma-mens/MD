@@ -30,7 +30,7 @@ clc;
 %*************************************************************************
 % input parameters
 %*************************************************************************
-Ni = 2; %8 number of atoms per side in original cubic configuration 
+Ni = 4; %8 number of atoms per side in original cubic configuration 
 Ts = 5; % 1.171461; % desired (and initial) temperature in LJ units (Ts = kB*T/epsilon)
 ns = 0.5; % 0.903992; % LJ number density ns = n*sigma^3
 epsilon = 1.65*10^(-21); % LJ energy [J]
