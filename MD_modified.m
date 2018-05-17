@@ -30,9 +30,9 @@ clc;
 %*************************************************************************
 % input parameters
 %*************************************************************************
-Ni = 4; %8 number of atoms per side in original cubic configuration 
-Ts = 5; % 1.171461; % desired (and initial) temperature in LJ units (Ts = kB*T/epsilon)
-ns = 0.5; % 0.903992; % LJ number density ns = n*sigma^3
+Ni = 8; %8 number of atoms per side in original cubic configuration 
+Ts = 2; % 1.171461; % desired (and initial) temperature in LJ units (Ts = kB*T/epsilon)
+ns = 0.9; % 0.903992; % LJ number density ns = n*sigma^3
 epsilon = 1.65*10^(-21); % LJ energy [J]
 sigma = 3.4*10^(-10); % LJ diameter [m]
 m = 39.948*1.660538921*10^(-27); % molecule mass [kg]
@@ -85,7 +85,7 @@ Res = zeros(STEPS,4); % Result Array (for all timesteps)
 %*************************************************************************
 %*************************************************************************
 [r,v]=initialize(Ls,Ni,Ts);
-% init_pos = r;
+init_pos = r;
 
 % %*************************************************************************
 % % Remove any center of mass motion
@@ -163,6 +163,11 @@ plot([1:size(Res,1)],Res(:,4),'k'), hold on
 
 N_start = STEPS_equilib;
 [mean(Res(N_start:size(Res,1),2)) mean(Res(N_start:size(Res,1),3)) mean(Res(N_start:size(Res,1),4))]
+ 
+% D = mean(norm(x)^2)/(6*Ts)
 
-
+% Results:
+% rho .5, T 5 -> [T, P, U ] 4.9598    4.6547   -2.3422
+% rho .9  T 2 -> [T, P, U]  1.9124    8.7789   -5.0390
+% rho .8  T 4 -> [T, P, U]  3.9715   12.1735   -3.4477
 

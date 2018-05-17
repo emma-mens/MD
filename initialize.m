@@ -31,3 +31,5 @@ for i=dl/2:dl:Ls-dl/2
         end
     end
 end
+r
+z
